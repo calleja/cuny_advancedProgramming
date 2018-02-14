@@ -18,34 +18,44 @@ class EquityTrade():
         self.timestamp=trade_dic['timestamp']
         self.tradetype=trade_dic['tradetype'] #buy, sell, short
         self.original_trade_type=trade_dic['original_tradetype']
-        #self.currentPortfolio=acctSnapshot #ass1_accountsClass
+        self.currentPortfolio=acctSnapshot #ass1_accountsClass
         
     
-    def qaTrade(self):
+    def qaTrade(self,result_set):
         #ensure that the trade makes sense given the current holdings in the portfolio... return a True or False... True will allow the transaction to make all the proper updates, while a False should prompt the user that the transaction is not allowed given the current holdings
-        return True
+        if self.tradetype=='buy':
+            if result_set['cash_delta']+self.currentPortfolio.cash_bal<0:
+                return False
+            else:
+                return True
+        if self.tradetype=='sell to close' or self.tradetype=='buy to close': #short shares may be stored as a negative holding, so need to watch it here
+            try:  #return the evaluation of the conditional statement below
+                return abs(self.currentPortfolio.getPortfolio()[self.ticker])>=abs(self.shares)
+            except KeyError:
+                return False
+                
     def tradeType(self):
         #call the appropriate function, determined by trade type i.e. short, long, sell from long
         if self.tradetype=='short':
-            if self.qaTrade():
-                result_set=self.shortTrade()
-            else: print('trade is not legal')
+            result_set=self.shortTrade()
+            return(result_set)
         elif self.tradetype=='buy':
-            if self.qaTrade():
-                result_set=self.longTrade()
-            else: print('trade is not legal')
+            result_set=self.longTrade()
+            if self.qaTrade(result_set):
+                return(result_set)
+            else: return(print('trade is not legal'))
             #don't need to send this through the qaTrade
         elif self.tradetype=='sell to close':
-            if self.qaTrade():
-                result_set=self.sellToClose()
-            else: print('trade is not legal')
+            result_set=self.sellToClose()
+            if self.qaTrade(result_set):
+                return(result_set)
+            else: return(print('trade is not legal'))
         elif self.tradetype=='buy to close':
-            #don't need to send through qa
-            if self.qaTrade():
-                result_set=self.buyToClose()
-            else: print('trade is not legal')
+            result_set=self.buyToClose()
+            if self.qaTrade(result_set):
+                return(result_set)
+            else: return(print('trade is not legal'))
         
-        return result_set
     
     def shortTrade(self):
         #no drawdown of cash, update portfolio w/negative shares
@@ -84,10 +94,5 @@ class EquityTrade():
         return(result_set)
         
         #call the proft calc engine and calculate realized profit
-    
-    def updatePortfolio(self):
-        #interact with the portfolio dictionary from the ass1_accountsClass.py file... I can either make the update via the account class or this trade class - perhaps not both
-        #this function could serve as the argument to ass1_acountsClass.updateAccount()
-        return
     
 

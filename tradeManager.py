@@ -35,4 +35,5 @@ class TradingDay(object):
         return
     def profitCalc(self):
         #handle the p+l... will need to decide either LIFO, FIFO or average trade cost... may require pandas or numpy... and even its own class
+        return
 
