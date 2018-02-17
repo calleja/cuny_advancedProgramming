@@ -5,12 +5,13 @@ Controller class for the trading application
 """
 
 import sys
-sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1')
+sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 import tradeClass as trade
 import ass1_acountsClass as accts
 import datetime as datetime
 import tradeManager as tm
 import engageUser as eu
+import yahoo_scraper_cleaner as scraper
 from imp import reload
 
 reload(trade)
@@ -70,3 +71,6 @@ cashAfterPurchase=act.getCash()
 ''' building console interaction '''
 engage=eu.Dialogue()
 engage.engageUser()
+
+''' test the scraper function '''
+s=scraper.scrapy()
