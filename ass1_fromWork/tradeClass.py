@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-I will need to connect to a profit calc engine
+This class QAs the trade, makes calculations based on tradetype... trades are to be stored via the tradeManager class... this class is accessed by the tradeManager and not directly
 """
 import sys
 #these paths will later need to be edited and matched with the imported/downloaded git folder
@@ -17,7 +17,7 @@ class EquityTrade():
         self.shares=trade_dic['shares']
         self.timestamp=trade_dic['timestamp']
         self.tradetype=trade_dic['tradetype'] #buy, sell, short
-        self.original_trade_type=trade_dic['original_tradetype']
+        #self.original_trade_type=trade_dic['original_tradetype']
         self.currentPortfolio=acctSnapshot #ass1_accountsClass
         
     
@@ -28,9 +28,9 @@ class EquityTrade():
                 return False
             else:
                 return True
-        if self.tradetype=='sell to close' or self.tradetype=='buy to close': #short shares may be stored as a negative holding, so need to watch it here
+        if self.tradetype=='sell to close' or self.tradetype=='buy to close': #TODO short shares may be stored as a negative holding, so need to watch it here
             try:  #return the evaluation of the conditional statement below
-                return abs(self.currentPortfolio.getPortfolio()[self.ticker])>=abs(self.shares)
+                return abs(self.currentPortfolio.positions[self.ticker]['shares'])>=abs(self.shares)
             except KeyError:
                 return False
                 
@@ -43,18 +43,27 @@ class EquityTrade():
             result_set=self.longTrade()
             if self.qaTrade(result_set):
                 return(result_set)
-            else: return(print('trade is not legal'))
+            else: 
+                print('trade is not legal')
+                #throw an error, that will be handled in tradeManager
+                raise ValueError
             #don't need to send this through the qaTrade
         elif self.tradetype=='sell to close':
             result_set=self.sellToClose()
             if self.qaTrade(result_set):
                 return(result_set)
-            else: return(print('trade is not legal'))
+            else: 
+                print('trade is not legal')
+                raise ValueError
+                
         elif self.tradetype=='buy to close':
             result_set=self.buyToClose()
             if self.qaTrade(result_set):
                 return(result_set)
-            else: return(print('trade is not legal'))
+            else: 
+                print('trade is not legal')
+                raise ValueError
+            
         
     
     def shortTrade(self):

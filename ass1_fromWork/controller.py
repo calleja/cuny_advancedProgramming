@@ -5,7 +5,7 @@ Controller class for the trading application
 """
 
 import sys
-sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
+sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1/ass1_fromWork')
 import tradeClass as trade
 import ass1_acountsClass as accts
 import datetime as datetime
@@ -17,8 +17,11 @@ from imp import reload
 reload(trade)
 reload(accts)
 reload(eu)
+reload(scraper)
 
 act=accts.Account()
+
+
 
 #4 pieces of information needed: ticker, timestamp, price, trade type and original trade type
 buy_trade={'ticker':'CPT','price':98.108,'shares':1000,'timestamp':datetime.datetime.today(),'tradetype':'buy','original_tradetype':'long'}
@@ -28,6 +31,9 @@ sell_trade_dic={'ticker':'HD','price':102.108,'shares':1000,'timestamp':datetime
 
 short_trade_dic={'ticker':'RLS','price':67.108,'shares':1000,'timestamp':datetime.datetime.today(),'tradetype':'short','original_tradetype':'short'}
 btc_trade_dic={'ticker':'RLS','price':69.108,'shares':1000,'timestamp':datetime.datetime.today(),'tradetype':'buy to close','original_tradetype':'short'}
+
+tup=short_trade_dic,
+tup=tup+(btc_trade_dic,)
 
 #initiate trading day object and pass all trades through the object in order to log it
 todayTrading=tm.TradingDay()
@@ -72,5 +78,11 @@ cashAfterPurchase=act.getCash()
 engage=eu.Dialogue()
 engage.engageUser()
 
+#trade has been logged into the account object successfuly
+engage.act.getPortfolio()
+engage.act.cash_bal
 ''' test the scraper function '''
-s=scraper.scrapy()
+s=scraper.Scrapy()
+s.uni_dic
+test=s.rtYhoDats('APC')
+

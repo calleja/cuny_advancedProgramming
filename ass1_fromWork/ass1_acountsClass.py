@@ -37,7 +37,7 @@ class Account:
         else:
             #create an entry/holding in the portfolio for that stock at 0 notional and shares
             self.positions[dic['ticker']]={'shares':0,'notional':0,'original_direction':''}
-            print(self.positions)
+        
         
     def postEquityTrade(self,dic):
         #dic will come from the tradeClass
