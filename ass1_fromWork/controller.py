@@ -12,6 +12,7 @@ import datetime as datetime
 import tradeManager as tm
 import engageUser as eu
 import yahoo_scraper_cleaner as scraper
+import pandas as pd
 from imp import reload
 
 reload(trade)
@@ -85,4 +86,31 @@ engage.act.cash_bal
 s=scraper.Scrapy()
 s.uni_dic
 test=s.rtYhoDats('APC')
+''' test the p&l class '''
+#version with no short positions... is qty neg or positive?
+fakeTrades1=(
+{'side':'buy','ticker':'APC','quantity':1000,'executed price':67.89,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':1000},
+{'side':'buy','ticker':'DAL','quantity':400,'executed price':89.23,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':400},
+{'side':'sell to close','ticker':'APC','quantity':500,'executed price':69.8,'execution timestamp':datetime.datetime.strptime('2017-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500},
+{'side':'buy','ticker':'DAL','quantity':200,'executed price':65,'execution timestamp':datetime.datetime.now(),'original_tradetype':'long','position_delta':200},
+{'side':'sell to close','ticker':'APC','quantity':500,'executed price':62.45,'execution timestamp':datetime.datetime.strptime('2018-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500})
 
+df=pd.DataFrame(list(fakeTrades1))
+df.dtypes
+a=df.groupby(['ticker','original_tradetype'])
+
+a.groups
+for name, group in a:
+    print(name)
+    print(group)
+    
+#selecting a particular group... the key of the group is a tuple... call the group by its key... this returns a dataframe!
+df_test=a.get_group(('APC','long'))    
+
+
+#permutation with open positions
+fakeTrades2=({'side':,'ticker':,'quantity':,'executed price':,'execution timestamp':datetime.datetime.now()},{'side':,'ticker':,'quantity':,'executed price':,'execution timestamp':datetime.datetime.now()},{'side':,'ticker':,'quantity':,'executed price':,'execution timestamp':datetime.datetime.now()},{'side':,'ticker':,'quantity':,'executed price':,'execution timestamp':datetime.datetime.now()},{'side':,'ticker':,'quantity':,'executed price':,'execution timestamp':datetime.datetime.now(),'original_tradetype':)
+
+'''
+{'side':rawDict['tradetype'],'ticker':rawDict['ticker'],'quantity':rawDict['shares'],'executed price':rawDict['price'],'execution timesestamp':rawDict['timestamp'],'money in/out':tradeClassDict['cash_delta']}
+'''

@@ -44,8 +44,8 @@ class TradingDay(object):
         
         
     def prepDict(self,tradeClassDict,rawDict):        
-        #take elements from both dictionaries and create a third one for logging
-        formattedDict={'side':rawDict['tradetype'],'ticker':rawDict['ticker'],'quantity':rawDict['shares'],'executed price':rawDict['price'],'execution timesestamp':rawDict['timestamp'],'money in/out':tradeClassDict['cash_delta']}
+        #take elements from both dictionaries and create a third one for logging... this will need to formatted before displaying to users
+        formattedDict={'side':rawDict['tradetype'],'ticker':rawDict['ticker'],'quantity':rawDict['shares'],'executed price':rawDict['price'],'execution timesestamp':rawDict['timestamp'],'money in/out':tradeClassDict['cash_delta'],'original_tradetype':tradeClassDict['original_tradetype'],'position_delta':tradeClassDict['position_delta']}
         return(formattedDict)
         
     def logTrade(self,tradeObject):
@@ -60,4 +60,5 @@ class TradingDay(object):
     
     def prettyPrintTradeLog(self):
         return print(self.tradeLogTup)
-
+    
+        

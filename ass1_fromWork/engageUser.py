@@ -28,11 +28,11 @@ class Dialogue(object):
             print(self.todayTrading.prettyPrintTradeLog())
             return(self.engageUser())
         elif menuSelection=='c':
-            #call the yahoo scraper on all stocks (a list)
-            stock_universe=['CPT','APC','DAL','ED','C']
-            #TODO the scraper class takes care of the entire universe, and this is no longer necessary
-            print('send stock universe to yahoo scraper')
-            return
+            #TODO call the pl class
+            print('your current portfolio is below... p&l calc is pending')
+            print(self.act.positions)
+            
+            return self.engageUser()
         elif menuSelection=='d':
             return
         else:
@@ -40,6 +40,7 @@ class Dialogue(object):
             self.engageUser()
     
     def tradeWorkflow(self):
+        #TODO confirm this method does nothing and delete it
         buy_trade={'ticker':'CPT','price':98.108,'shares':1000,'timestamp':datetime.datetime.today(),'tradetype':'buy','original_tradetype':'long'}
         buy_test_today=self.todayTrading.makeTrade(buy_trade,self.act)
         buy_dict=buy_test_today.tradeType()
@@ -103,6 +104,7 @@ class Dialogue(object):
                 
                 try:
                     single_trade_dic=self.todayTrading.makeTrade(agg_dic,self.act)
+                    #makeTrade() calls tradeClass.tradeType() which QAs the trade, determines the original tradetype (long/short) and calculates the delta on position size and imapct to cash
                     print(single_trade_dic) #TODO printing None
                 
                 #TODO this is the portion that is explicitly throwing the error... error states that single_trade_dic is empty
