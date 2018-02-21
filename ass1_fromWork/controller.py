@@ -5,7 +5,8 @@ Controller class for the trading application
 """
 
 import sys
-sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1/ass1_fromWork')
+#sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1/ass1_fromWork')
+sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 import tradeClass as trade
 import ass1_acountsClass as accts
 import datetime as datetime
@@ -84,8 +85,11 @@ engage.act.getPortfolio()
 engage.act.cash_bal
 ''' test the scraper function '''
 s=scraper.Scrapy()
-s.uni_dic
+ahora=s.rtYhoDats()
 test=s.rtYhoDats('APC')
+
+one_dic={'side':'buy','ticker':'APC','quantity':1000,'executed price':67.89,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':1000}
+one_dic.keys()
 ''' test the p&l class '''
 #version with no short positions... is qty neg or positive?
 fakeTrades1=(

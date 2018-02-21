@@ -30,8 +30,8 @@ class Dialogue(object):
         elif menuSelection=='c':
             #TODO call the pl class
             print('your current portfolio is below... p&l calc is pending')
-            print(self.act.positions)
-            
+            self.calcPL()
+            #TODO call the scraper on entire universe of stocks and send over to accounts API
             return self.engageUser()
         elif menuSelection=='d':
             return
@@ -48,11 +48,6 @@ class Dialogue(object):
         print(self.act.getPortfolio())
         print(self.act.cash_bal)
         
-    def blotterWorkflow(self):
-        return
-    def portfolioStatementWorkflow(self):
-        #extract the current price for all stocks in the universe... or the portfolio
-        return
     
     def prepareTrade(self):
             agg_dic={}            
@@ -117,6 +112,9 @@ class Dialogue(object):
             else:
                 self.engageUser()
             
-            
-            #self.tradeWorkflow()
+    def calcPL(self):
+        #call scraper, pass dictionary of current prices to the account object and print the current status of the portfolio dictionary, equipped with both realized and unrealized p+l
+        s=scraper.Scrapy()
+        ahora=s.rtYhoDats()
+        return(print(self.act.calcUPL(ahora)))
             

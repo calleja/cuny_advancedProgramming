@@ -68,7 +68,7 @@ this function will then instantiate a tradeClass object that will QA the trade (
         #reconcile the new transaction to the previous portfolio stats... only applicable to position increasing transactions (buys for long positions and sales for shorts)
         #ticker will be in the dictionary... no need to check that... initial trade will not have a VWAP
         print("I'm reconciling the portfolio to this transaction dictionary:")
-        print(dic)
+        #print(dic)
         if(self.positions[dic['ticker']]['original_direction']==dic['original_tradetype'] and  abs(self.positions[dic['ticker']]['shares']+dic['position_delta'])>abs(self.positions[dic['ticker']]['shares'])):
             newVWAP=(self.positions[dic['ticker']]['notional']+dic['notional_delta'])/(self.positions[dic['ticker']]['shares']+dic['position_delta'])
             self.positions[dic['ticker']]['vwap']=newVWAP
@@ -80,3 +80,12 @@ this function will then instantiate a tradeClass object that will QA the trade (
         if(self.positions[dic['ticker']]['original_direction']==dic['original_tradetype'] and abs(self.positions[dic['ticker']]['shares']+dic['position_delta'])<self.positions[dic['ticker']]['shares']):
             #'notional_delta' is negative for sales
             self.positions[dic['ticker']]['realized_pl']=-dic['notional_delta']+self.positions[dic['ticker']]['vwap']*dic['position_delta']+self.positions[dic['ticker']]['realized_pl']
+            
+    def calcUPL(self,dictOfPrices):
+        #dictOfPrices = output from scrape class; format: {ticker as str:price as float}
+        #calc = portfolio for >0 holdings: current market price*shares held - VWAP*shares held 
+        #TODO this assumes that the account object is updated to real time holdings
+        for k,v in self.positions.items():
+            #retrieve price
+            self.positions[k]['upl']=dictOfPrices[k]*v['shares']-v['vwap']*v['shares']
+        return(self.positions)

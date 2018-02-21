@@ -28,12 +28,12 @@ class Scrapy(object):
             stocks={stocks:self.uni_dic[stocks]}
             
         #call the next function            
-        self.topLineScrape(stocks)     
+        return(self.topLineScrape(stocks))
         
     def topLineScrape(self,stocks):
         #entire dictionary, regardless of # of elements, is passed this argument
         yahoo_dict={}
-        keys_len=len(stocks.keys)
+        keys_len=len(stocks.keys())
         
         if keys_len>1: #the parsing function is different depending whether we need to retrieve prices for p&l or single trades
             for k,v in stocks.items():
@@ -48,7 +48,7 @@ class Scrapy(object):
                 stock_html=yahoo_pg.text
                 stock_soup =bs(stock_html,'html.parser')
                 #below returns a dictionary w/bid & ask
-                yahoo_dict=self.singleton(stock_soup,k)
+                yahoo_dict=self.singleton(k,stock_soup)
         
         return yahoo_dict
     
