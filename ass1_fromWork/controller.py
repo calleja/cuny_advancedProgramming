@@ -5,7 +5,7 @@ Controller class for the trading application
 """
 
 import sys
-#sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1/ass1_fromWork')
+sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1/ass1_fromWork')
 sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 import tradeClass as trade
 import ass1_acountsClass as accts

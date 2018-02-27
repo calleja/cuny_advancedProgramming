@@ -5,6 +5,7 @@ Client dialogue
 """
 import sys
 sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1')
+sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 import tradeClass as trade
 import ass1_acountsClass as accts
 import datetime as datetime
@@ -39,21 +40,12 @@ class Dialogue(object):
             print('please select an option')
             self.engageUser()
     
-    def tradeWorkflow(self):
-        #TODO confirm this method does nothing and delete it
-        buy_trade={'ticker':'CPT','price':98.108,'shares':1000,'timestamp':datetime.datetime.today(),'tradetype':'buy','original_tradetype':'long'}
-        buy_test_today=self.todayTrading.makeTrade(buy_trade,self.act)
-        buy_dict=buy_test_today.tradeType()
-        self.act.postEquityTrade(buy_dict)
-        print(self.act.getPortfolio())
-        print(self.act.cash_bal)
-        
     
     def prepareTrade(self):
             agg_dic={}            
             #dictionary of trade stats to send over to the tradeClass
-            stockTrade=input('Which stock would you like to trade?\n a - Camden Property Trust / CPT\n b - Delta Airlines / DAL\n c- Apache / APC\n d - Con Edison / ED\n e - Citigroup / C\n')
-            stock_dic={'a':'CPT','b':'DAL','c':'APC','d':'ED','e':'C'}
+            stockTrade=input('Which stock would you like to trade?\n a - Apple / AAPL\n b - Amazon / AMZN\n c- Microsoft / MSFT\n d - Snap Chat / SNAP\n e - Intel Corp / INTC\n')
+            stock_dic={'a':'AAPL','b':'AMZN','c':'MSFT','d':'SNAP','e':'INTC'}
             try:
                 #store ticker symbol in the final dictionary
                 agg_dic['ticker']=stock_dic[stockTrade]

@@ -14,7 +14,9 @@ P/L:
     Unrealized p/l, realized p/l
 """
 import sys
+import pandas as pd
 sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1')
+sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 import tradeClass as trade
 
 class TradingDay(object):
@@ -49,9 +51,9 @@ class TradingDay(object):
         return(formattedDict)
         
     def logTrade(self,tradeObject):
-        #store all the records onto a large dictionary that needs to persist throughout the trading day... we need to store timestamp, money in/out (available via the "specificTrade" reference variable in "makeTrade"), qty, ticker and direction (buy/sell)
-        #normalize the tradeObject and fit into a list of dictionaries
-        self.tradeLogTup=self.tradeLogTup+(tradeObject,)
+        #store all the records onto a chain of dictionaries contained in a tuple that persists throughout the trading day... we need to store timestamp, money in/out (available via the "specificTrade" reference variable in "makeTrade"), qty, ticker and direction (buy/sell)
+        #append tuples with tup=tup+(newTrade,)
+        self.tradeLogTup=(tradeObject,)+self.tradeLogTup
         #create another function to format the trade list, unless this method is light
         return
     def profitCalc(self):
@@ -60,5 +62,14 @@ class TradingDay(object):
     
     def prettyPrintTradeLog(self):
         return print(self.tradeLogTup)
+    
+    def sortTrades(self):
+        #place tickers of trades in a pandas df of ticker and timestamp; groupBy ticker and select for the latest timestamp, then sort by timestamp
+        df=pd.DataFrame(list(self.tradeLogTup))
+
+        g=df.groupby('ticker').apply(lambda x: x['timestamp'].max())
+
+        g.sort_values(ascending=False,inplace=True)
+        return(list(g.index))
     
         

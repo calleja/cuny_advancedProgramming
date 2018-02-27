@@ -7,12 +7,18 @@ This object will have attributes like cash and positions and will need to allow 
 Positions must store total shares, average price, possibly VWAP
 In addition, store cash amount; keep in mind that short positions do not affect cash balance.
 """
+import pandas as pd
 
 class Account:
     def __init__(self):
         self.cash_bal=1000000
         #will be a nested dictionary, the outermost key is the ticker and the value will be a dictionary of total shares, average price and possibly VWAP, realized p/l... ex: {ticker:{'notional':notaionValue,'direction':direction_string, etc...}}
-        self.positions={}
+        self.positions={'AAPL':{'shares':0,'vwap':0,'realized_pl':0,'notional':0,'original_direction':'','upl':0},
+                        'INTC':{'shares':0,'vwap':0,'realized_pl':0,'notional':0,'original_direction':'','upl':0},
+                        'MSFT':{'shares':0,'vwap':0,'realized_pl':0,'notional':0,'original_direction':'','upl':0},
+                        'SNAP':{'shares':0,'vwap':0,'realized_pl':0,'notional':0,'original_direction':'','upl':0},
+                        'AMZN':{'shares':0,'vwap':0,'realized_pl':0,'notional':0,'original_direction':'','upl':0}}
+        
         
     def getCash(self):
         print('cash balance is :'+str(self.cash_bal))
@@ -81,11 +87,15 @@ this function will then instantiate a tradeClass object that will QA the trade (
             #'notional_delta' is negative for sales
             self.positions[dic['ticker']]['realized_pl']=-dic['notional_delta']+self.positions[dic['ticker']]['vwap']*dic['position_delta']+self.positions[dic['ticker']]['realized_pl']
             
-    def calcUPL(self,dictOfPrices):
+    def calcUPL(self,dictOfPrices,sortedList):
         #dictOfPrices = output from scrape class; format: {ticker as str:price as float}
         #calc = portfolio for >0 holdings: current market price*shares held - VWAP*shares held 
-        #TODO this assumes that the account object is updated to real time holdings
+        #TODO create a dataframe of universe of potential holdings, sorted in order as passed in parameter
         for k,v in self.positions.items():
             #retrieve price
             self.positions[k]['upl']=dictOfPrices[k]*v['shares']-v['vwap']*v['shares']
+         #TODO will need to insert the cash into the dataframe before pretty printing   
         return(self.positions)
+    
+    def sortPositions(self,sortedList):
+        self.positions

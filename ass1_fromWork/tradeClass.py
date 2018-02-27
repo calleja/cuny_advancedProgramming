@@ -6,6 +6,7 @@ This class QAs the trade, makes calculations based on tradetype... trades are to
 import sys
 #these paths will later need to be edited and matched with the imported/downloaded git folder
 sys.path.append('/home/lechuza/Documents/CUNY/data_607/assignment1')
+sys.path.append('/home/tio/Documents/CUNY/advancedProgramming/ass1_fromWork')
 #import ass1_acountsClass as acct
 
 class EquityTrade():
