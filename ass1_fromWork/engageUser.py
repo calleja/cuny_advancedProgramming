@@ -108,5 +108,6 @@ class Dialogue(object):
         #call scraper, pass dictionary of current prices to the account object and print the current status of the portfolio dictionary, equipped with both realized and unrealized p+l
         s=scraper.Scrapy()
         ahora=s.rtYhoDats()
-        return(print(self.act.calcUPL(ahora)))
+        sorted_list=self.todayTrading.sortTrades()
+        return(print(self.act.calcUPL(ahora,sorted_list)))
             

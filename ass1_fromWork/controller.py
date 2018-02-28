@@ -85,23 +85,36 @@ engage.act.getPortfolio()
 engage.act.cash_bal
 ''' test the scraper function '''
 s=scraper.Scrapy()
-ahora=s.rtYhoDats()
-test=s.rtYhoDats('APC')
+amzn=s.rtYhoDats('AMZN')
+todo=s.rtYhoDats()
 
 one_dic={'side':'buy','ticker':'APC','quantity':1000,'executed price':67.89,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':1000}
 one_dic.keys()
 ''' test the p&l class '''
 #version with no short positions... is qty neg or positive?
 fakeTrades1=(
-{'side':'buy','ticker':'APC','quantity':1000,'executed price':67.89,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':1000},
+{'side':'buy','ticker':'INTC','quantity':1000,'executed price':67.89,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':1000},
 {'side':'buy','ticker':'DAL','quantity':400,'executed price':89.23,'execution timestamp':datetime.datetime.strptime('2016-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':400},
-{'side':'sell to close','ticker':'APC','quantity':500,'executed price':69.8,'execution timestamp':datetime.datetime.strptime('2017-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500},
-{'side':'buy','ticker':'DAL','quantity':200,'executed price':65,'execution timestamp':datetime.datetime.now(),'original_tradetype':'long','position_delta':200},
+{'side':'sell to close','ticker':'AAPL','quantity':500,'executed price':69.8,'execution timestamp':datetime.datetime.strptime('2017-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500},
+{'side':'buy','ticker':'AAPL','quantity':200,'executed price':65,'execution timestamp':datetime.datetime.now(),'original_tradetype':'long','position_delta':200},
 {'side':'sell to close','ticker':'APC','quantity':500,'executed price':62.45,'execution timestamp':datetime.datetime.strptime('2018-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500})
 
 df=pd.DataFrame(list(fakeTrades1))
 df.dtypes
 a=df.groupby(['ticker','original_tradetype'])
+
+def sortTrades(df):
+        #place tickers of trades in a pandas df of ticker and timestamp; groupBy ticker and select for the latest timestamp, then sort by timestamp
+
+        g=df.groupby('ticker').apply(lambda x: x['execution timestamp'].max())
+
+        g.sort_values(ascending=False,inplace=True)
+        traded_ticks=g.index.tolist()
+        universe=['AMZN','AAPL','SNAP','INTC','MSFT']
+        [traded_ticks.append(x) for x in universe if x not in traded_ticks]
+        return(traded_ticks)
+    
+sortTrades(df)
 
 a.groups
 for name, group in a:

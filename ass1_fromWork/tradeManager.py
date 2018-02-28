@@ -70,6 +70,9 @@ class TradingDay(object):
         g=df.groupby('ticker').apply(lambda x: x['timestamp'].max())
 
         g.sort_values(ascending=False,inplace=True)
-        return(list(g.index))
+        traded_ticks=g.ticker.tolist()
+        universe=['AMZN','AAPL','SNAP','INTC','MSFT']
+        [traded_ticks.append(x) for x in universe if x not in traded_ticks]
+        return(list(traded_ticks))
     
         
