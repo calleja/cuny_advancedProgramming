@@ -30,9 +30,6 @@ class Account:
     def updateTickersOwned(self):
         #could also just get the keys from the dictionary
         self.tickers=self.position.keys()
-            
-    def amend_cash(self,amend):
-        self.cash=self.cash+amend
         
     def checkIfNew(self,dic):
         #checks whether there is a position in that stock and in the same direction
@@ -89,13 +86,25 @@ this function will then instantiate a tradeClass object that will QA the trade (
             
     def calcUPL(self,dictOfPrices,sortedList):
         #dictOfPrices = output from scrape class; format: {ticker as str:price as float}
-        #calc = portfolio for >0 holdings: current market price*shares held - VWAP*shares held 
+        #calc = portfolio for >0 holdings: current market price*shares held - VWAP*shares held  
+        total_notional=0
         #TODO create a dataframe of universe of potential holdings, sorted in order as passed in parameter
         for k,v in self.positions.items():
             #retrieve price
             self.positions[k]['upl']=dictOfPrices[k]*v['shares']-v['vwap']*v['shares']
-         #TODO will need to insert the cash into the dataframe before pretty printing   
-        return(self.positions)
+            g=dictOfPrices[k]*v['shares']
+            self.positions[k]['notional']=g
+            total_notional+=g
+         #TODO will need to insert the cash into the dataframe before pretty printing  
+         
+         #calculate the total size of portfolio: cash + notional
+        self.portfolio_value=self.cash_bal+sum(total_notional) 
+        cash_line=(self.cash_bal,self.portfolio_value)
+        sorted_df=self.sortPositions(self,sortedList) 
+        print(sorted_df)
+        print(cash_line)
     
     def sortPositions(self,sortedList):
+        df=pd.DataFrame(list(self.positions))
+        #sort df by the order of tickers in sortedList
         self.positions

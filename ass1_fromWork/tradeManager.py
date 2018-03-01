@@ -57,20 +57,20 @@ class TradingDay(object):
         #create another function to format the trade list, unless this method is light
         return
     def profitCalc(self):
-        #handle the p+l... will need to decide either LIFO, FIFO or average trade cost... may require pandas or numpy... and even its own class
+        #handle the p+l
         return
     
     def prettyPrintTradeLog(self):
-        return print(self.tradeLogTup)
+        return print(pd.DataFrame(self.tradeLogTup))
     
     def sortTrades(self):
         #place tickers of trades in a pandas df of ticker and timestamp; groupBy ticker and select for the latest timestamp, then sort by timestamp
         df=pd.DataFrame(list(self.tradeLogTup))
 
-        g=df.groupby('ticker').apply(lambda x: x['timestamp'].max())
+        g=df.groupby('ticker').apply(lambda x: x['execution timesestamp'].max())
 
         g.sort_values(ascending=False,inplace=True)
-        traded_ticks=g.ticker.tolist()
+        traded_ticks=g.index.tolist()
         universe=['AMZN','AAPL','SNAP','INTC','MSFT']
         [traded_ticks.append(x) for x in universe if x not in traded_ticks]
         return(list(traded_ticks))
