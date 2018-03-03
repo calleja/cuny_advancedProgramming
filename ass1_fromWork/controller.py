@@ -100,14 +100,15 @@ fakeTrades1=(
 {'side':'buy','ticker':'AAPL','quantity':200,'executed price':65,'execution timestamp':datetime.datetime.now(),'original_tradetype':'long','position_delta':200},
 {'side':'sell to close','ticker':'APC','quantity':500,'executed price':62.45,'execution timestamp':datetime.datetime.strptime('2018-01-01',"%Y-%m-%d"),'original_tradetype':'long','position_delta':-500})
 
-pp = pprint.PrettyPrinter(indent=4)
-pp.pprint(fakeTrades1)
 df=pd.DataFrame(list(fakeTrades1))
+df.reindex([0,1,2,3,4,])
+df
+new_order=[2,0,1,4,3]
+df.reindex(new_order)
+df
 
-order=['APC','INTC','AAPL','DAL']
-hg=df.reindex(index=df['ticker'])
-hg.index
-hg.sort_index(level=order)
+
+
 def sortTrades(df):
         #place tickers of trades in a pandas df of ticker and timestamp; groupBy ticker and select for the latest timestamp, then sort by timestamp
 
